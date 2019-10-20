@@ -46,7 +46,9 @@ async function getStickerBuffer(url) {
     });
 
     transparentImg.autocrop();
-    transparentImg.resize(512, 512);
+
+    const resizeParams = transparentImg.bitmap.width > transparentImg.bitmap.height ? [512, Jimp.AUTO] : [Jimp.AUTO, 512];
+    transparentImg.resize(...resizeParams);
 
     return transparentImg.getBufferAsync(Jimp.MIME_PNG);
 }
