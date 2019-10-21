@@ -60,12 +60,18 @@ async function buildStickerSet(stickers, ctx) {
 
     const imgBuffer = await getStickerBuffer(sticker.media);
 
-    const alreadyExists = await ctx.createNewStickerSet(stickerSetName, "unofficial emoji mashup stickers test", {
-        emojis: sticker.emoji,
-        png_sticker: {
-            source: imgBuffer,
-        },
-    });
+    let alreadyExists = false;
+    try {
+        await ctx.createNewStickerSet(stickerSetName, "unofficial emoji mashup stickers test", {
+            emojis: sticker.emoji,
+            png_sticker: {
+                source: imgBuffer,
+            },
+        });
+    } catch (e) {
+        console.log(e);
+        alreadyExists = true;
+    }
 
     const allStickers = alreadyExists ? slice(stickers, 1) : alreadyExists;
 
